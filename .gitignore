@@ -30,3 +30,8 @@ pnpm-debug.log*
 agent/.venv/
 agent/__pycache__/
 agent/*.pyc
+
+# Python (charts/)
+charts/.venv/
+charts/__pycache__/
+charts/*.pyc
