@@ -8,6 +8,10 @@ slug: "nasdaq-correction-august-2026"
 
 The Nasdaq had a rough week. On July 29, the Nasdaq Composite closed at 24,442 — a 10.1% drop from its June 1 high of 27,190 — which is the technical definition of a correction, and its second one this year. The first came in March, when the index fell 13.4% from an October 2025 high. Two corrections in five months is not normal. But "not normal" and "cause for panic" aren't the same thing, and I think the distinction matters here.
 
+![Nasdaq Composite, May–August 2026](/charts/nasdaq-correction-2026.png)
+
+*Source: Yahoo Finance (via yfinance). Data as of 2026-08-04.*
+
 Start with what actually caused it. Chip stocks led the way. Semiconductor and memory names shed more than $1 trillion in combined market value over the week — Nvidia alone lost roughly $238 billion, SK Hynix $176 billion, Samsung $173 billion, Micron $113 billion. A few days earlier, in an earlier leg of the same selloff, Micron had dropped 13% in a single session, Intel fell 9%, and AMD fell 7%. The proximate trigger was SK Hynix's earnings report: record profits, but investors didn't like the signal on high-bandwidth memory production, and that reaction rippled through the rest of the sector.
 
 Underneath the earnings reaction is a bigger story: doubt about whether AI infrastructure spending will generate returns commensurate with what's being spent on it. That doubt got sharper because of a specific, less-discussed wrinkle — circular financing. Nvidia is reportedly weighing up to $600 billion in financing tied to OpenAI: roughly $250 billion to guarantee an Ohio data center project and $350 billion to help OpenAI buy Nvidia chips. That's on top of more than $540 billion in similar deals Nvidia has already announced this year, including a $500 billion AI initiative with SK Hynix. The concern isn't that these deals are fake — it's that when a chipmaker finances its own customers' purchases of its own chips, both the revenue and the risk are more concentrated than the headline numbers suggest. If AI demand disappoints, the losses don't stay contained to one company's balance sheet.
