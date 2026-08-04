@@ -1,22 +1,19 @@
-:root {
-  --color-bg: #ffffff;
-  --color-text: #1a1a1a;
-  --color-muted: #666666;
-  --color-accent: #1a56db;
-  --color-border: #e5e5e5;
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-  --font-serif: Georgia, "Times New Roman", serif;
-  --content-width: 42rem;
+html {
+  font-size: 15px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-bg: #14161a;
-    --color-text: #e8e8e8;
-    --color-muted: #9a9a9a;
-    --color-accent: #6ea8fe;
-    --color-border: #2a2d33;
-  }
+:root {
+  --color-bg: #f6f3ec;
+  --color-bg-raised: #eee9db;
+  --color-text: #1c1b17;
+  --color-heading: #0f0e0c;
+  --color-muted: #5c5648;
+  --color-border: #ddd6c4;
+  --color-accent: #8a5e19;
+  --color-pos: #1f7a45;
+  --color-neg: #b3261e;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --content-width: 42rem;
 }
 
 * {
@@ -27,7 +24,8 @@ body {
   margin: 0;
   background: var(--color-bg);
   color: var(--color-text);
-  font-family: var(--font-sans);
+  font-family: var(--font-mono);
+  font-size: 1rem;
   line-height: 1.6;
 }
 
@@ -39,7 +37,7 @@ body {
 
 header.site-header {
   border-bottom: 1px solid var(--color-border);
-  padding: 1.5rem 0;
+  padding: 1.25rem 0;
 }
 
 header.site-header .wrapper {
@@ -50,16 +48,20 @@ header.site-header .wrapper {
 
 header.site-header a.brand {
   font-weight: 700;
-  font-size: 1.1rem;
-  color: var(--color-text);
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-heading);
   text-decoration: none;
 }
 
 header.site-header nav a {
   color: var(--color-muted);
   text-decoration: none;
-  margin-left: 1.25rem;
-  font-size: 0.95rem;
+  margin-left: 1.5rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 
 header.site-header nav a:hover {
@@ -67,41 +69,64 @@ header.site-header nav a:hover {
 }
 
 main {
-  padding: 2.5rem 0 3rem;
+  padding: 2rem 0 3rem;
   min-height: 60vh;
 }
 
 h1, h2, h3 {
-  line-height: 1.25;
+  color: var(--color-heading);
+  line-height: 1.3;
+  font-weight: 700;
 }
 
 a {
   color: var(--color-accent);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color 0.12s ease, border-color 0.12s ease;
+}
+
+a:hover {
+  border-bottom-color: currentColor;
+}
+
+code {
+  font-family: var(--font-mono);
 }
 
 .post-list {
   list-style: none;
   padding: 0;
   margin: 0;
+  counter-reset: post;
 }
 
 .post-list li {
-  padding: 1.1rem 0;
+  counter-increment: post;
+  position: relative;
+  padding: 1.25rem 0 1.25rem 3rem;
   border-bottom: 1px solid var(--color-border);
 }
 
-.post-list li:first-child {
-  padding-top: 0;
+.post-list li::before {
+  content: counter(post, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  top: 1.25rem;
+  color: var(--color-muted);
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
 }
 
 .post-list h2 {
-  margin: 0 0 0.3rem;
-  font-size: 1.15rem;
+  margin: 0 0 0.4rem;
+  font-size: 1.1rem;
 }
 
 .post-list a {
   text-decoration: none;
-  color: var(--color-text);
+  border-bottom: none;
+  color: var(--color-heading);
 }
 
 .post-list a:hover {
@@ -109,26 +134,40 @@ a {
 }
 
 .post-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
   color: var(--color-muted);
-  font-size: 0.85rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 
 .post-meta .tags {
-  margin-left: 0.5rem;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0;
+}
+
+.post-meta .tags::before {
+  content: "/";
+  color: var(--color-border);
 }
 
 .tag {
   display: inline-block;
-  font-size: 0.75rem;
-  color: var(--color-muted);
+  font-size: 0.7rem;
   border: 1px solid var(--color-border);
-  border-radius: 999px;
-  padding: 0.05rem 0.55rem;
-  margin-right: 0.35rem;
+  border-radius: 0;
+  padding: 0.05rem 0.45rem;
 }
 
 article.post h1 {
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.6rem;
+  font-size: 1.6rem;
 }
 
 article.post .post-meta {
@@ -150,17 +189,24 @@ article.post blockquote {
 article.post pre {
   padding: 1rem;
   overflow-x: auto;
-  background: var(--color-border);
-  border-radius: 6px;
+  background: var(--color-bg-raised);
+  border: 1px solid var(--color-border);
+  border-radius: 0;
 }
 
-article.post code {
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 0.9em;
+article.post pre code {
+  font-size: 0.85em;
+}
+
+article.post :not(pre) > code {
+  background: var(--color-bg-raised);
+  border: 1px solid var(--color-border);
+  padding: 0.05rem 0.35rem;
+  font-size: 0.85em;
 }
 
 article.post blockquote {
-  border-left: 3px solid var(--color-border);
+  border-left: 2px solid var(--color-border);
   margin-left: 0;
   padding-left: 1rem;
   color: var(--color-muted);
@@ -168,9 +214,9 @@ article.post blockquote {
 
 footer.site-footer {
   border-top: 1px solid var(--color-border);
-  padding: 1.5rem 0 2.5rem;
+  padding: 1.25rem 0 2rem;
   color: var(--color-muted);
-  font-size: 0.85rem;
+  font-size: 0.8rem;
 }
 
 footer.site-footer .disclaimer {
