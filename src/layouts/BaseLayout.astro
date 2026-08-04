@@ -30,7 +30,21 @@ const siteTitle = 'Konrad';
   <body>
     <header class="site-header">
       <div class="wrapper">
-        <a class="brand" href="/">{siteTitle}</a>
+        <div class="brand-group">
+          <a class="brand" href="/">{siteTitle}</a>
+          <details class="about">
+            <summary>About</summary>
+            <div class="about-panel">
+              <p>
+                I write about markets, technology, and the occasional
+                supply-chain rant — plainly, without hedging every sentence
+                into mush. Anything here that touches money is me thinking
+                out loud, not a recommendation. See the footer on every page
+                — I mean it.
+              </p>
+            </div>
+          </details>
+        </div>
         <nav>
           <a href="/">Home</a>
         </nav>
