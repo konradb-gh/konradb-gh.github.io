@@ -1,0 +1,42 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = 'Thoughts on markets, money, and building things.' } = Astro.props;
+const siteTitle = 'Konrad Boguszewski';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="description" content={description} />
+    <title>{title} · {siteTitle}</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="wrapper">
+        <a class="brand" href="/">{siteTitle}</a>
+        <nav>
+          <a href="/">Home</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="wrapper">
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrapper">
+        <p class="disclaimer">Not financial advice. For informational purposes only.</p>
+      </div>
+    </footer>
+  </body>
+</html>
