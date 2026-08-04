@@ -50,8 +50,8 @@ site and deploys it to GitHub Pages via GitHub Actions.
 
 In your repo settings, under **Pages**, set the source to **GitHub Actions**.
 
-`astro.config.mjs` currently sets `site: 'https://kondzio1289.github.io'`,
-which assumes this repo is named `kondzio1289.github.io` (a user/org page
-served at the domain root). If you rename the repo or deploy it as a project
-page instead (`username.github.io/repo-name`), update `site` and add a
-matching `base` in `astro.config.mjs`.
+`astro.config.mjs` sets `site: 'https://konradb-gh.github.io'`, which
+assumes this repo is named `konradb-gh.github.io` (a user/org page served
+at the domain root). If you rename the repo or deploy it as a project page
+instead (`username.github.io/repo-name`), update `site` and add a matching
+`base` in `astro.config.mjs`.
