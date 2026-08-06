@@ -14,6 +14,8 @@ It isn't. Those two nearly-identical numbers are the endpoints of two completely
 
 *Source: Yahoo Finance (WTI crude, CL=F; S&P 500, ^GSPC, via yfinance). Both series indexed to 100 at the Feb 27, 2026 close. Data as of 2026-08-05.*
 
+Quick note before the breakdown: I'm using the S&P 500 here, not the Nasdaq or a narrower benchmark. Its breadth and its market-cap weighting toward large, stable, profitable companies make it the closest single proxy for the health of the broader US economy, rather than for tech sentiment or a handful of overweighted names. That's the actual question this piece is asking, so that's the index that answers it.
+
 ## What actually happened, phase by phase
 
 This has not been one continuous war with one continuous market reaction. It's been three distinct regimes, and conflating them is how you end up with a lazy "geopolitical risk is priced in" take that doesn't survive contact with the daily data.
