@@ -34,6 +34,7 @@ const { Content } = await render(post);
     {post.data.audioUrl && (
       <div class="audio-player">
         <span class="audio-label">Listen</span>
+        <span class="audio-caption">Audio narration of this article</span>
         <audio controls src={post.data.audioUrl}>
           Your browser doesn't support the audio element.
         </audio>

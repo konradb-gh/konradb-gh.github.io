@@ -241,6 +241,14 @@ article.post h1 {
   color: var(--color-muted);
 }
 
+.audio-caption {
+  display: block;
+  margin-bottom: 0.7rem;
+  margin-top: -0.3rem;
+  color: var(--color-muted);
+  font-size: 0.85rem;
+}
+
 .audio-player audio {
   display: block;
   width: 100%;
