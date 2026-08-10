@@ -4,6 +4,7 @@ description: "Central banks have bought over 1,000 tonnes of gold a year in thre
 pubDate: 2026-08-05
 tags: ["gold", "central-banks", "commodities", "markets", "reserves"]
 slug: "central-bank-gold-reserves-2026"
+audioUrl: "/audio/Central_Bank_Gold_Buying.mp3"
 ---
 
 Gold gained 65% in 2025 — its best year since 1980 — then kept going, touching a record above $5,589 an ounce in late January 2026 ([Gold & Silver](https://goldsilver.com/industry-news/article/gold-price-forecasts-for-2026-revisited-after-q1/)) before giving back a chunk of that spike. That price action is the headline. It's not the interesting part. The interesting part is who's been buying, in what size, and why the answer to that question has quietly rewritten how gold actually gets priced.
