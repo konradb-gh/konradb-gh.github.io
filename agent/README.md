@@ -40,3 +40,10 @@ python generate_post.py "why small businesses struggled during COVID"
 
 Output: `src/content/blog/<slug>.md`, with frontmatter for `title`,
 `description`, `pubDate`, `tags`, and `slug`.
+
+## Adding an audio recording to a post
+
+Drop the audio file in `public/audio/` (e.g. `public/audio/my-post.mp3`), then
+add `audioUrl: "/audio/my-post.mp3"` to that post's frontmatter. It's optional
+— posts without it render no audio player. `generate_post.py` doesn't set
+this field; add it manually after generation if you're supplying a recording.

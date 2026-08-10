@@ -4,6 +4,7 @@ description: "Chips, circular AI financing, and a hawkish Fed drove the Nasdaq i
 pubDate: 2026-08-04
 tags: ["nasdaq", "stock-market", "semiconductors", "federal-reserve", "ai"]
 slug: "nasdaq-correction-august-2026"
+audioUrl: "/audio/nasdaq_narration.mp3"
 ---
 
 The Nasdaq had a rough week, July 27–31. On July 29, the Nasdaq Composite closed at 24,442 — a 10.1% drop from its June 1 high of 27,190 — which is the technical definition of a correction, and its second one in 2026. The first came in March, when the index fell 13.4% from an October 2025 high. Two corrections in five months is not normal. But "not normal" and "cause for panic" aren't the same thing, and I think the distinction matters here.

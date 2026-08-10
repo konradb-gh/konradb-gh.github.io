@@ -31,6 +31,14 @@ const { Content } = await render(post);
         ))}
       </span>
     </p>
+    {post.data.audioUrl && (
+      <div class="audio-player">
+        <span class="audio-label">Listen</span>
+        <audio controls src={post.data.audioUrl}>
+          Your browser doesn't support the audio element.
+        </audio>
+      </div>
+    )}
     <Content />
   </article>
 </BaseLayout>
