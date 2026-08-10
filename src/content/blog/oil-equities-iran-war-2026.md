@@ -1,5 +1,5 @@
 ---
-title: "Oil Went to War. The S&P 500 Basically Didn't."
+title: "Oil vs. the S&P 500 Since the Iran War"
 description: "Since the Feb 28 Iran strikes, WTI and the S&P 500 are up almost the same amount — 12%. The paths getting there, and the correlation between them, tell a much more interesting story than that coincidence does."
 pubDate: 2026-08-06
 tags: ["oil", "equities", "geopolitics", "markets", "correlation"]

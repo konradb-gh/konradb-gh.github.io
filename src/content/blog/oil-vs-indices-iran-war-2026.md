@@ -1,5 +1,5 @@
 ---
-title: "Why the Dow Tracks Oil and the Nasdaq Doesn't"
+title: "Oil's Correlation With the Dow, Nasdaq 100, and Nasdaq Composite"
 description: "Oil's correlation with the S&P 500 was moderate and fading. Split across the Dow, Nasdaq 100, and Nasdaq Composite, that average hides two very different markets — one still pricing this war, one that's moved on."
 pubDate: 2026-08-07
 tags: ["oil", "equities", "dow-jones", "nasdaq", "correlation"]

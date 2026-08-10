@@ -1,5 +1,5 @@
 ---
-title: "What's Really Driving the Nasdaq's Latest Correction"
+title: "What Caused the Nasdaq's August 2026 Correction"
 description: "Chips, circular AI financing, and a hawkish Fed drove the Nasdaq into its second correction of 2026. Here's what the data says about whether it's serious."
 pubDate: 2026-08-04
 tags: ["nasdaq", "stock-market", "semiconductors", "federal-reserve", "ai"]

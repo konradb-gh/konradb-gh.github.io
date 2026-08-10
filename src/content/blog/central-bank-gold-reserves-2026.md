@@ -1,5 +1,5 @@
 ---
-title: "Why Central Banks Can't Stop Buying Gold"
+title: "Central Bank Gold Buying, Explained"
 description: "Central banks have bought over 1,000 tonnes of gold a year in three of the last four years. The real story isn't the price — it's who's setting it now."
 pubDate: 2026-08-05
 tags: ["gold", "central-banks", "commodities", "markets", "reserves"]
