@@ -4,6 +4,7 @@ description: "Oil's correlation with the S&P 500 was moderate and fading. Split 
 pubDate: 2026-08-07
 tags: ["oil", "equities", "dow-jones", "nasdaq", "correlation"]
 slug: "oil-vs-indices-iran-war-2026"
+audioUrl: "/audio/oil_vs_dow_nasdaq.mp3"
 ---
 
 On August 6, 2026, I [ran the numbers on oil and the S&P 500](/blog/oil-equities-iran-war-2026) since the February 28 Iran strikes and found a real but partial relationship — a −0.50 Pearson correlation on daily returns, fading to −0.37 by Phase 3. The S&P 500 is one number, though, and it's an average of nearly 500 companies that don't all have the same relationship with oil. Split the same question across the Dow, the Nasdaq 100, and the Nasdaq Composite, and the average stops looking like a fair summary. Over the full period, the Dow's correlation with oil (−0.62) is more than 70% stronger than the Nasdaq 100's (−0.36) — and by Phase 3, that gap has widened to more than double, because the Dow's relationship with oil isn't shrinking the way the other three indices' are.

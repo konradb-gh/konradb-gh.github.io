@@ -4,6 +4,7 @@ description: "Since the Feb 28 Iran strikes, WTI and the S&P 500 are up almost t
 pubDate: 2026-08-06
 tags: ["oil", "equities", "geopolitics", "markets", "correlation"]
 slug: "oil-equities-iran-war-2026"
+audioUrl: "/audio/oil_vs_sp500.mp3"
 ---
 
 As of August 5, 2026's close, WTI crude is up 12.2% since February 27, 2026 — the last trading day before the US and Israel struck Iran. The S&P 500 is up 12.3% over the same stretch. Two numbers that close together, on two assets that are supposed to move in opposite directions during an oil-shock war, looks like proof the market shrugged the whole thing off.

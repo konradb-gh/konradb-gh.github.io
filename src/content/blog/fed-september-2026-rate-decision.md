@@ -4,6 +4,7 @@ description: "A hawkish July dissent had markets pricing near-80% odds of a Fed 
 pubDate: 2026-08-08
 tags: ["federal-reserve", "interest-rates", "inflation", "markets", "economy"]
 slug: "fed-september-2026-rate-decision"
+audioUrl: "/audio/fed_meeting.mp3"
 ---
 
 At the July 29 meeting, the FOMC held the federal funds rate steady at 3.50%–3.75%. Nothing unusual there — except how it held. The vote was 9-3, and all three dissenters wanted to move in the opposite direction from what most people expect a dissent to mean: Cleveland's Beth Hammack, Minneapolis's Neel Kashkari, and Dallas's Lorie Logan all preferred a quarter-point hike. That's a hawkish dissent, not a dovish one — three regional presidents on record saying rates aren't high enough yet. By late July, that dissent — plus a May CPI print at 4.2% year-over-year, the highest in three years — had CME's FedWatch tool pricing the odds of a September hike near 80% ([CNBC](https://www.cnbc.com/2026/07/29/fed-rate-decision-july-2026.html)).

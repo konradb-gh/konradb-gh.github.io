@@ -4,6 +4,7 @@ description: "The classic Connors dip-buying rule failed a real sealed test acro
 pubDate: 2026-08-10
 tags: ["trading-strategies", "backtesting", "technical-analysis", "quantitative-research", "markets"]
 slug: "connors-dip-buying-indices-2026"
+audioUrl: "/audio/Connors_dip_buying.mp3"
 ---
 
 "Buy the dip" gets repeated so often in trading circles that it's stopped sounding like a strategy and started sounding like a personality trait. Almost nobody tests it properly — no out-of-sample wall, no costs charged, no pass/fail line written down in advance, just a backtest run until it looks good and then posted as a rule. My [trading-research repo](https://github.com/konradb-gh/trading-research) ran the disciplined version of that test on the specific formulation most people actually mean when they say it: the Connors RSI dip-buying rule, across ten global stock indices, tested against 120 parameter combinations, with a hard wall between the data used to search and the data used to grade the result ([full paper](https://github.com/konradb-gh/trading-research/blob/main/experiments/01-index-dip-buying/README.md)).
