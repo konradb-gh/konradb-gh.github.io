@@ -1,0 +1,73 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  recentPosts: CollectionEntry<'blog'>[];
+  totalCount: number;
+  currentPost?: {
+    pubDate: Date;
+    readingMinutes: number;
+    category: string;
+    tags: string[];
+  };
+}
+
+const { recentPosts, totalCount, currentPost } = Astro.props;
+---
+
+<aside class="page-sidebar">
+  {
+    currentPost && (
+      <div class="sidebar-box">
+        <div class="sidebar-box-header">This post</div>
+        <div class="sidebar-meta-rows">
+          <div class="sidebar-meta-row">
+            <span class="sidebar-meta-label">Published</span>
+            <span>{currentPost.pubDate.toISOString().slice(0, 10)}</span>
+          </div>
+          <div class="sidebar-meta-row">
+            <span class="sidebar-meta-label">Reading</span>
+            <span>{currentPost.readingMinutes} min</span>
+          </div>
+          <div class="sidebar-meta-row">
+            <span class="sidebar-meta-label">Category</span>
+            <span class="sidebar-meta-accent">{currentPost.category}</span>
+          </div>
+          <div class="sidebar-tags">
+            {currentPost.tags.map((tag) => (
+              <span class="tag">{tag}</span>
+            ))}
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  <div class="sidebar-box">
+    <div class="sidebar-box-header">Recent</div>
+    <div class="sidebar-recent-list">
+      {
+        recentPosts.map((post, i) => (
+          <a
+            href={`/blog/${post.data.slug}/`}
+            class={`sidebar-recent-item${i === 0 && !currentPost ? ' is-latest' : ''}`}
+          >
+            <span class="sidebar-recent-date">
+              {post.data.pubDate.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: '2-digit',
+              })}
+            </span>
+            <span class="sidebar-recent-title">{post.data.title}</span>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+
+  <div class="sidebar-footer">
+    <span>{totalCount} posts</span>
+    <span class="sidebar-archive">Archive →</span>
+  </div>
+</aside>

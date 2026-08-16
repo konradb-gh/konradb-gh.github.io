@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Sidebar from '../../components/Sidebar.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
@@ -12,6 +13,14 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
+
+const allPosts = (await getCollection('blog')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+const recentPosts = allPosts.filter((p) => p.data.slug !== post.data.slug).slice(0, 3);
+
+const wordCount = post.body?.trim().split(/\s+/).length ?? 0;
+const readingMinutes = Math.max(1, Math.round(wordCount / 220));
 ---
 
 <BaseLayout title={post.data.title} description={post.data.description}>
@@ -42,4 +51,15 @@ const { Content } = await render(post);
     )}
     <Content />
   </article>
+
+  <Sidebar
+    recentPosts={recentPosts}
+    totalCount={allPosts.length}
+    currentPost={{
+      pubDate: post.data.pubDate,
+      readingMinutes,
+      category: post.data.category,
+      tags: post.data.tags,
+    }}
+  />
 </BaseLayout>
