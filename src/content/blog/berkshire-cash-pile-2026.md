@@ -4,6 +4,7 @@ description: "Berkshire's cash pile peaked at a verified $397.4 billion, then fe
 pubDate: 2026-08-16
 tags: ["berkshire-hathaway", "warren-buffett", "value-investing", "capital-allocation", "markets"]
 slug: "berkshire-cash-pile-2026"
+category: "markets"
 ---
 
 Two figures for Berkshire Hathaway's cash pile at the end of the first quarter of 2026 are floating around in press coverage right now: $397.4 billion and $497.4 billion. Only one of them is real. I went to the actual 10-Q Berkshire filed with the SEC rather than trust either secondary number, and the balance sheet is unambiguous: $51,478 million in cash and cash equivalents plus $339,261 million in short-term Treasury Bills, held by the insurance and other businesses, plus another $6,644 million in cash sitting in the railroad, utilities and energy segment. Add it up and you get $397,383 million — $397.4 billion, to the dollar. The $497.4 billion figure isn't supported by anything in the filing; it looks like a transcription error that made it into circulation and got repeated. By June 30, 2026, the same math — $35,096 million cash plus $324,905 million in Treasury Bills in the insurance business, plus $5,513 million at the railroad, utilities and energy segment — gives $365,514 million, or $365.5 billion. That's the real range: a genuine, record $397.4 billion peak, drawn down to $365.5 billion three months later.

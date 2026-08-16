@@ -4,6 +4,7 @@ description: "Oil's correlation with the S&P 500 was moderate and fading. Split 
 pubDate: 2026-08-07
 tags: ["oil", "equities", "dow-jones", "nasdaq", "correlation"]
 slug: "oil-vs-indices-iran-war-2026"
+category: "markets"
 audioUrl: "/audio/oil_vs_dow_nasdaq.mp3"
 ---
 

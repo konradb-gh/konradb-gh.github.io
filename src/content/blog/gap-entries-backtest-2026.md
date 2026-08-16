@@ -4,6 +4,7 @@ description: "A gap-trading signal beat random selection and held up across two 
 pubDate: 2026-08-15
 tags: ["trading-strategies", "backtesting", "quantitative-research", "risk-management", "markets"]
 slug: "gap-entries-backtest-2026"
+category: "experiments"
 ---
 
 Two things can be true about a trading result at the same time, and they sound like they should be the same fact when they aren't. A signal can be statistically real — meaning it beats random chance by more than luck alone should allow — and still be something nobody could ever actually trade. And a result that "holds up" when you check it separately in two different time periods looks like strong, independent evidence. It doesn't have to be. Both halves can be propped up by their own separate stroke of luck, and checking twice won't catch that on its own. This experiment produced a clean, fully-documented example of both problems — from my own trading-research repo, [Experiment 06](https://github.com/konradb-gh/trading-research/tree/main/experiments/06-gap-entries), specifically.

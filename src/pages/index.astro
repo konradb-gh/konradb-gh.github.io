@@ -2,16 +2,29 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-const posts = (await getCollection('blog')).sort(
+const allPosts = (await getCollection('blog')).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
+
+const marketsPosts = allPosts.filter((post) => post.data.category === 'markets');
+const experimentsPosts = allPosts.filter((post) => post.data.category === 'experiments');
 ---
 
 <BaseLayout title="Home">
-  <h1>Writing</h1>
-  <ul class="post-list">
+  <h1>The Desk</h1>
+
+  <div class="category-tabs" role="tablist">
+    <button type="button" class="category-tab is-active" data-category="markets" role="tab" aria-selected="true">
+      Markets
+    </button>
+    <button type="button" class="category-tab" data-category="experiments" role="tab" aria-selected="false">
+      My Experiments
+    </button>
+  </div>
+
+  <ul class="post-list" data-panel="markets">
     {
-      posts.map((post) => (
+      marketsPosts.map((post) => (
         <li>
           <h2>
             <a href={`/blog/${post.data.slug}/`}>{post.data.title}</a>
@@ -35,4 +48,52 @@ const posts = (await getCollection('blog')).sort(
       ))
     }
   </ul>
+
+  <ul class="post-list" data-panel="experiments" hidden>
+    {
+      experimentsPosts.map((post) => (
+        <li>
+          <h2>
+            <a href={`/blog/${post.data.slug}/`}>{post.data.title}</a>
+          </h2>
+          <p class="post-meta">
+            <time datetime={post.data.pubDate.toISOString()}>
+              {post.data.pubDate.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: '2-digit',
+              })}
+            </time>
+            <span class="tags">
+              {post.data.tags.map((tag) => (
+                <span class="tag">{tag}</span>
+              ))}
+            </span>
+          </p>
+          <p>{post.data.description}</p>
+        </li>
+      ))
+    }
+  </ul>
+
+  <script>
+    const tabs = document.querySelectorAll('.category-tab');
+    const panels = document.querySelectorAll('.post-list[data-panel]');
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const category = tab.getAttribute('data-category');
+
+        tabs.forEach((t) => {
+          const active = t === tab;
+          t.classList.toggle('is-active', active);
+          t.setAttribute('aria-selected', String(active));
+        });
+
+        panels.forEach((panel) => {
+          panel.hidden = panel.getAttribute('data-panel') !== category;
+        });
+      });
+    });
+  </script>
 </BaseLayout>

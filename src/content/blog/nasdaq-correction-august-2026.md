@@ -4,6 +4,7 @@ description: "Chips, circular AI financing, and a hawkish Fed drove the Nasdaq i
 pubDate: 2026-08-04
 tags: ["nasdaq", "stock-market", "semiconductors", "federal-reserve", "ai"]
 slug: "nasdaq-correction-august-2026"
+category: "markets"
 audioUrl: "/audio/nasdaq_narration.mp3"
 ---
 

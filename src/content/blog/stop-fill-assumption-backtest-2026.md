@@ -4,6 +4,7 @@ description: "A single line in a trading backtest — what price a stop-loss fil
 pubDate: 2026-08-13
 tags: ["trading-strategies", "backtesting", "risk-management", "quantitative-research", "markets"]
 slug: "stop-fill-assumption-backtest-2026"
+category: "experiments"
 ---
 
 To break even with a 1:1.5 risk-to-reward ratio per trade, you need a minimum win rate of 40%. Any win rate above 40% makes your strategy profitable, while anything below will lose money over time. That single fact is the lens the rest of this post reads through, so it's worth sitting with before anything else.

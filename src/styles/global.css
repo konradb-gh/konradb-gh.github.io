@@ -147,11 +147,44 @@ code {
   font-family: var(--font-mono);
 }
 
+.category-tabs {
+  display: flex;
+  gap: 0.6rem;
+  margin: 1.5rem 0;
+}
+
+.category-tab {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-muted);
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: 0;
+  padding: 0.4rem 0.9rem;
+  cursor: pointer;
+  transition: color 0.12s ease, border-color 0.12s ease;
+}
+
+.category-tab:hover {
+  color: var(--color-accent);
+}
+
+.category-tab.is-active {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
 .post-list {
   list-style: none;
   padding: 0;
   margin: 0;
   counter-reset: post;
+}
+
+.post-list[hidden] {
+  display: none;
 }
 
 .post-list li {

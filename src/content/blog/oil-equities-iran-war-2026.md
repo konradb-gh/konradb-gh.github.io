@@ -4,6 +4,7 @@ description: "Since the Feb 28 Iran strikes, WTI and the S&P 500 are up almost t
 pubDate: 2026-08-06
 tags: ["oil", "equities", "geopolitics", "markets", "correlation"]
 slug: "oil-equities-iran-war-2026"
+category: "markets"
 audioUrl: "/audio/oil_vs_sp500.mp3"
 ---
 

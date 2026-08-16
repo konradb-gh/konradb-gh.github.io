@@ -4,6 +4,7 @@ description: "Central banks have bought over 1,000 tonnes of gold a year in thre
 pubDate: 2026-08-05
 tags: ["gold", "central-banks", "commodities", "markets", "reserves"]
 slug: "central-bank-gold-reserves-2026"
+category: "markets"
 audioUrl: "/audio/Central_Bank_Gold_Buying.mp3"
 ---
 

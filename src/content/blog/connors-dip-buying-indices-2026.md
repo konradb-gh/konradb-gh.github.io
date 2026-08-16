@@ -4,6 +4,7 @@ description: "The classic Connors dip-buying rule failed a real sealed test acro
 pubDate: 2026-08-10
 tags: ["trading-strategies", "backtesting", "technical-analysis", "quantitative-research", "markets"]
 slug: "connors-dip-buying-indices-2026"
+category: "experiments"
 audioUrl: "/audio/Connors_dip_buying.mp3"
 ---
 

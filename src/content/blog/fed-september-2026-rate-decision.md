@@ -4,6 +4,7 @@ description: "A hawkish July dissent had markets pricing near-80% odds of a Fed 
 pubDate: 2026-08-08
 tags: ["federal-reserve", "interest-rates", "inflation", "markets", "economy"]
 slug: "fed-september-2026-rate-decision"
+category: "markets"
 audioUrl: "/audio/fed_meeting.mp3"
 ---
 
