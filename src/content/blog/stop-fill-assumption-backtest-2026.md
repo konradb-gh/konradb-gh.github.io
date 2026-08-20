@@ -1,5 +1,5 @@
 ---
-title: "The Hidden Backtest Assumption That Turned +17.73% Into −38.98%"
+title: "Stop-Fill Assumption Simulation: The Hidden Assumption That Turned +17.73% Into −38.98%"
 description: "A single line in a trading backtest — what price a stop-loss fills at overnight — quietly picked the winner of an exit-strategy test, and inflated the whole system's headline return. Here's how, in plain terms."
 pubDate: 2026-08-13
 tags: ["trading-strategies", "backtesting", "risk-management", "quantitative-research", "markets"]

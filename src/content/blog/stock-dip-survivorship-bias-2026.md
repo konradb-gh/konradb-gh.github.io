@@ -1,5 +1,5 @@
 ---
-title: "Real, Measured, and Still Not Worth Trading"
+title: "Quality-Stock Dip-Buying Simulation: Real, Measured, and Still Not Worth Trading"
 description: "A dip-buying strategy on quality stocks passed a real sealed test on 8,877 trades. Then a data gap that's nobody's fault — old stock records quietly missing the companies that failed — shrank a third of the edge away."
 pubDate: 2026-08-17
 tags: ["trading-strategies", "backtesting", "quantitative-research", "risk-management", "markets"]

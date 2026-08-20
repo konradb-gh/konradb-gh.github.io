@@ -1,5 +1,5 @@
 ---
-title: "The Signal That Passed Two Tests and Still Wasn't Real"
+title: "Gap-Entry Simulation: The Signal That Passed Two Tests and Still Wasn't Real"
 description: "A gap-trading signal beat random selection and held up across two separate time periods — then turned out to be one lucky trade out of 1,443. A second, real effect showed up too, and still couldn't be traded or afforded."
 pubDate: 2026-08-15
 tags: ["trading-strategies", "backtesting", "quantitative-research", "risk-management", "markets"]

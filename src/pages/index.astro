@@ -24,6 +24,17 @@ const recentPosts = allPosts.slice(0, 5);
     </button>
   </div>
 
+  <p class="methodology-note" data-panel="experiments" hidden>
+    The goal here is to find out which trading and investment ideas actually
+    hold up under honest testing, from short-term trading rules to long-term
+    portfolio construction. Every experiment is created, tested, and
+    simulated on my own machine, entirely in Python, against decades of real
+    daily price data — most experiments span 1996 to today, and the core
+    system's own backtest covers more than four decades, back to 1982. Full
+    code, data, and reproduction steps for every experiment are published in
+    the <a href="https://github.com/konradb-gh/trading-research">trading-research repo</a>.
+  </p>
+
   <ul class="post-list" data-panel="markets">
     {
       marketsPosts.map((post) => (
@@ -82,7 +93,7 @@ const recentPosts = allPosts.slice(0, 5);
 
   <script>
     const tabs = document.querySelectorAll('.category-tab');
-    const panels = document.querySelectorAll('.post-list[data-panel]');
+    const panels = document.querySelectorAll('[data-panel]');
 
     tabs.forEach((tab) => {
       tab.addEventListener('click', () => {

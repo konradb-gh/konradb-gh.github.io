@@ -1,5 +1,5 @@
 ---
-title: "A Real Trading Signal Worth Actively Avoiding"
+title: "Index Reconstitution Simulation: A Real Trading Signal Worth Actively Avoiding"
 description: "When a stock joins the S&P 500, forced buying pushes its price up for real. By the time anyone could actually trade it, the move is already reversing — a real effect whose reachable side reliably loses money."
 pubDate: 2026-08-19
 tags: ["trading-strategies", "backtesting", "quantitative-research", "risk-management", "markets"]

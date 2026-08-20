@@ -1,5 +1,5 @@
 ---
-title: "The Connors Dip-Buying Rule: A Real Signal You Still Can't Trade"
+title: "Connors Dip-Buying Simulation: A Real Signal You Still Can't Trade"
 description: "The classic Connors dip-buying rule failed a real sealed test across 10 indices — except for one variant that passed, then ran into a different problem entirely."
 pubDate: 2026-08-10
 tags: ["trading-strategies", "backtesting", "technical-analysis", "quantitative-research", "markets"]

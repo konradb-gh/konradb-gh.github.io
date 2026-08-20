@@ -177,6 +177,15 @@ code {
   border-color: var(--color-accent);
 }
 
+.methodology-note {
+  margin: 0 0 1.5rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-muted);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
 .post-list {
   list-style: none;
   padding: 0;
