@@ -9,7 +9,9 @@ const allPosts = (await getCollection('blog')).sort(
 
 const marketsPosts = allPosts.filter((post) => post.data.category === 'markets');
 const experimentsPosts = allPosts.filter((post) => post.data.category === 'experiments');
-const glossaryPosts = allPosts.filter((post) => post.data.category === 'glossary');
+// Glossary reads as a reference index, not a news feed, so it's numbered
+// oldest-first (order added) rather than newest-first like the other tabs.
+const glossaryPosts = allPosts.filter((post) => post.data.category === 'glossary').reverse();
 const recentPosts = allPosts.slice(0, 5);
 ---
 

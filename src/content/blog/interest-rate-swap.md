@@ -11,6 +11,8 @@ An interest rate swap is a contract between two parties to exchange interest pay
 
 ## The analogy
 
+If the idea of a fixed payment on borrowed money is still fuzzy, [what a bond actually is](/blog/bond) covers that basic building block first.
+
 Say you and a friend each owe $300,000 on a mortgage. Yours is fixed at 6%. Hers floats with the market — 5% one year, maybe 7% the next. Neither of you wants to actually refinance; that means new paperwork, new fees, and your bank isn't going to let you hand your loan to a stranger anyway. So instead, you make a private side deal: each month, you work out what the other person's payment would have been under your rate instead of theirs, and whoever comes out behind on paper pays the difference to the other.
 
 Your actual mortgages never move. Your bank still bills you at your fixed rate, and hers still bills her at whatever the floating rate reset to. But between the two of you, you've swapped the exposure — she now effectively has a fixed payment, and you're now effectively riding the market. Scale that up to institutional size, swap the friend for a bank or a dealer as the counterparty, and that's functionally an interest rate swap.
