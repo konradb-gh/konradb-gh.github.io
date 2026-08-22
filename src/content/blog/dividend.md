@@ -25,6 +25,10 @@ When you buy a stock, you don't own it, on the company's books, the instant you 
 
 On the morning of the ex-date, exchanges mechanically adjust the stock's reference price down by roughly the dividend amount — a $50 stock paying a $0.50 dividend opens with its reference price, and any outstanding limit orders, marked down to about $49.50 ([Schwab](https://www.schwab.com/learn/story/ex-dividend-dates-understanding-dividend-risk)). That's a bookkeeping adjustment, not a guarantee about where the stock actually trades that day. Real buyers and sellers still set the price from there — good news, a market-wide rally, or just ordinary noise can easily push the stock well above or below that adjusted starting point by the closing bell. The exchange resets the reference point; the market decides what happens next.
 
+![The ex-date price adjustment: a $50 stock paying a $0.50 dividend](/charts/dividend-price-adjustment-2026.png)
+
+*Illustrates the mechanical reference-price adjustment described above — not a real stock, no external data.*
+
 ## The same relationship, running on different clocks
 
 Because the ex-date/record-date gap is just a function of settlement time, it looks different in every market that hasn't moved to the same settlement speed at the same pace — and this has genuinely been in motion the last few years, not a fixed fact to memorize once and forget.
@@ -34,6 +38,10 @@ Because the ex-date/record-date gap is just a function of settlement time, it lo
 **India** got there even earlier, moving to T+1 back in 2023. The pattern is the same: a real 2026 example is BSE Ltd's ₹10-per-share dividend, where the record date and ex-date both fell on July 10, 2026 ([Zee Business](https://www.zeebiz.com/market-news/news-500-dividend-payout-bse-dividend-record-date-next-week-heres-the-last-day-to-buy-shares-398353)).
 
 **The UK** hasn't made the jump yet. It's still on T+2 as of today, which is why FTSE 100 shares still show the older pattern — an ex-date on a Thursday typically paired with a record date on the following business day, not the same day ([interactive investor](https://www.ii.co.uk/analysis-commentary/ftse-100-ex-dividend-dates-august-2026-ii539870)). That's set to change on a specific, already-legislated date: the UK moves to T+1 on October 11, 2027 — the same date the EU has adopted, via a rule change published in the EU's Official Journal in October 2025, after ESMA recommended it ([Global Relay](https://www.grip.globalrelay.com/uk-will-move-to-t1-cycle-for-securities-settlement-from-october-2027/); [ESMA](https://www.esma.europa.eu/press-news/esma-news/esma-proposes-move-t1-october-2027)). So the UK and most of the EU are currently the odd ones out among major markets, and that's specifically because of where they are in this transition, not a permanent structural difference — worth checking again once that date actually arrives, since settlement cycles have moved faster than expected before and this whole area is worth re-verifying rather than treating as settled.
+
+![Ex-date and record date across three settlement cycles: US, India, and the UK/EU](/charts/dividend-settlement-comparison-2026.png)
+
+*Illustrates the three markets described above, relative to a common trade day — not a specific real dividend, no external data.*
 
 ## One more thing worth connecting
 

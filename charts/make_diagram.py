@@ -5,20 +5,33 @@ script in this directory, which all plot real market data pulled via
 yfinance — this one draws hand-specified shapes (timelines, flow
 diagrams) for explaining a mechanism, not for reporting a price.
 
-Two subcommands, sharing the same visual language (warm paper
+Four subcommands, sharing the same visual language (warm paper
 background, amber accent, near-black ink, JetBrains Mono, sharp
 corners, thin 1px borders):
 
-  timeline  A horizontal sequence of dated events — e.g. a bond's
-            cash flows from purchase to maturity. Each event is one of
-            three kinds (outflow / coupon / maturity), styled
-            distinctly so a reader can tell a repeating payment apart
-            from the one-off events at the ends.
+  timeline    A horizontal sequence of dated events — e.g. a bond's
+              cash flows from purchase to maturity. Each event is one
+              of three kinds (outflow / coupon / maturity), styled
+              distinctly so a reader can tell a repeating payment
+              apart from the one-off events at the ends.
 
-  flow      A two-party box-and-arrow diagram — e.g. who pays what in
-            an interest rate swap — with an optional dashed
-            "reference only" box for a notional amount that never
-            actually changes hands.
+  flow        A two-party box-and-arrow diagram — e.g. who pays what
+              in an interest rate swap — with an optional dashed
+              "reference only" note box for something like a notional
+              amount that never actually changes hands.
+
+  compare     A single before/after state change — one box, one
+              labeled arrow, one box — e.g. a stock's reference price
+              adjusting down on the ex-dividend date. Optional dashed
+              note box underneath for a caveat that shouldn't look
+              like it carries the same weight as the main mechanic.
+
+  settlement  A multi-row comparison of how long each of several
+              markets' settlement cycles takes, one row per market,
+              each showing trade day / ex-date / record date as
+              points along a shared day-offset axis — so markets with
+              matching cycles visually align and markets with a gap
+              between ex-date and record date visibly show it.
 
 Examples:
     python make_diagram.py timeline \\
@@ -39,7 +52,24 @@ Examples:
         --right-label "The Bank" \\
         --top-arrow-label "Pays a fixed rate" \\
         --bottom-arrow-label "Pays a floating rate" \\
-        --notional-label "Notional amount: $300,000\\nreference only -- never actually exchanged"
+        --note-label "Notional amount: $300,000\\nreference only -- never actually exchanged"
+
+    python make_diagram.py compare \\
+        --title "The ex-date price adjustment" \\
+        --output ../public/charts/dividend-price-adjustment-2026.png \\
+        --left-label "Before ex-date\\n$50.00" \\
+        --right-label "Ex-date open\\n$49.50" \\
+        --arrow-label "Reference price adjusted\\ndown by the $0.50 dividend" \\
+        --note-label "Mechanical starting point only --\\nreal trading still sets where it closes"
+
+    python make_diagram.py settlement \\
+        --title "Ex-date and record date, three settlement cycles" \\
+        --output ../public/charts/dividend-settlement-comparison-2026.png \\
+        --day-label "0:Trade day" --day-label "1:1 business day later" \\
+        --day-label "2:2 business days later" \\
+        --row "US -- T+1:1:1" \\
+        --row "India -- T+1:1:1" \\
+        --row "UK / EU -- T+2 (until Oct 2027):1:2"
 """
 
 from __future__ import annotations
@@ -95,6 +125,26 @@ def _apply_title(ax, title: str) -> None:
         fontweight="bold",
         loc="left",
         pad=18,
+    )
+
+
+def _draw_note_box(ax, label: str | None, *, center_x: float, y: float, width: float, height: float) -> None:
+    """A dashed, de-emphasized box for a caveat that shouldn't read with
+    the same weight as the diagram's main mechanic — a notional amount
+    that never moves, a disclaimer that a mechanical adjustment isn't a
+    guarantee, etc. No-op if label is None."""
+    if not label:
+        return
+    x = center_x - width / 2
+    ax.add_patch(
+        Rectangle(
+            (x, y), width, height,
+            facecolor="none", edgecolor=COLOR_MUTED, linewidth=1, linestyle=(0, (4, 3)), zorder=3,
+        )
+    )
+    ax.text(
+        center_x, y + height / 2, label.replace("\\n", "\n"),
+        ha="center", va="center", fontsize=8.5, color=COLOR_MUTED, zorder=4,
     )
 
 
@@ -201,7 +251,7 @@ def make_flow(
     right_label: str,
     top_arrow_label: str,
     bottom_arrow_label: str,
-    notional_label: str | None,
+    note_label: str | None,
     output_path: Path,
     title: str,
 ) -> None:
@@ -255,20 +305,177 @@ def make_flow(
         ha="center", va="top", fontsize=9, color=COLOR_MUTED, fontweight="bold",
     )
 
-    if notional_label:
-        note_w, note_h = 5.4, 1.0
-        note_x = (10 - note_w) / 2
-        note_y = 0.55
+    _draw_note_box(ax, note_label, center_x=5.0, y=0.55, width=5.4, height=1.0)
+
+    _apply_title(ax, title)
+
+    fig.tight_layout()
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(output_path, facecolor=COLOR_BG)
+    plt.close(fig)
+
+
+# ---------------------------------------------------------------------------
+# compare
+# ---------------------------------------------------------------------------
+
+
+def make_compare(
+    left_label: str,
+    right_label: str,
+    arrow_label: str,
+    note_label: str | None,
+    output_path: Path,
+    title: str,
+) -> None:
+    plt.rcParams["font.family"] = FONT_STACK
+
+    fig, ax = plt.subplots(figsize=(8, 4.2), dpi=150)
+    fig.patch.set_facecolor(COLOR_BG)
+    ax.set_facecolor(COLOR_BG)
+    ax.set_xlim(0, 10)
+    ax.set_ylim(0, 5.4)
+    ax.axis("off")
+
+    box_w, box_h = 2.3, 1.8
+    left_x, right_x = 0.7, 10 - 0.7 - box_w
+    box_y = 2.4
+
+    for x, label in ((left_x, left_label), (right_x, right_label)):
         ax.add_patch(
             Rectangle(
-                (note_x, note_y), note_w, note_h,
-                facecolor="none", edgecolor=COLOR_MUTED, linewidth=1, linestyle=(0, (4, 3)), zorder=3,
+                (x, box_y), box_w, box_h,
+                facecolor=COLOR_BG, edgecolor=COLOR_HEADING, linewidth=1.4, zorder=5,
             )
         )
         ax.text(
-            note_x + note_w / 2, note_y + note_h / 2, notional_label.replace("\\n", "\n"),
-            ha="center", va="center", fontsize=8.5, color=COLOR_MUTED, zorder=4,
+            x + box_w / 2, box_y + box_h / 2, label.replace("\\n", "\n"),
+            ha="center", va="center", fontsize=12, fontweight="bold", color=COLOR_HEADING, zorder=6,
+            linespacing=1.6,
         )
+
+    left_edge = left_x + box_w
+    right_edge = right_x
+
+    ax.annotate(
+        "", xy=(right_edge, box_y + box_h / 2), xytext=(left_edge, box_y + box_h / 2),
+        arrowprops=dict(arrowstyle="-|>", color=COLOR_ACCENT, linewidth=2, mutation_scale=20),
+        zorder=4,
+    )
+    ax.text(
+        (left_edge + right_edge) / 2, box_y + box_h / 2 + 0.26, arrow_label.replace("\\n", "\n"),
+        ha="center", va="bottom", fontsize=9, color=COLOR_ACCENT, fontweight="bold",
+    )
+
+    _draw_note_box(ax, note_label, center_x=5.0, y=0.35, width=6.6, height=1.05)
+
+    _apply_title(ax, title)
+
+    fig.tight_layout()
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(output_path, facecolor=COLOR_BG)
+    plt.close(fig)
+
+
+# ---------------------------------------------------------------------------
+# settlement
+# ---------------------------------------------------------------------------
+
+
+def parse_row(spec: str) -> tuple[str, int, int]:
+    parts = spec.split(":", 2)
+    if len(parts) != 3:
+        raise ChartError(f'Bad --row value {spec!r}; expected "LABEL:EX_DAY:RECORD_DAY"')
+    label, ex_str, record_str = parts
+    try:
+        ex_day, record_day = int(ex_str), int(record_str)
+    except ValueError as exc:
+        raise ChartError(f"Bad day number in --row {spec!r}: {exc}") from exc
+    if record_day < ex_day:
+        raise ChartError(f"Record day can't come before ex-date day in --row {spec!r}")
+    return label.replace("\\n", "\n"), ex_day, record_day
+
+
+def parse_day_label(spec: str) -> tuple[int, str]:
+    if ":" not in spec:
+        raise ChartError(f'Bad --day-label value {spec!r}; expected "DAY:LABEL"')
+    day_str, label = spec.split(":", 1)
+    try:
+        day = int(day_str)
+    except ValueError as exc:
+        raise ChartError(f"Bad day number in --day-label {spec!r}: {exc}") from exc
+    return day, label
+
+
+def make_settlement(
+    rows: list[tuple[str, int, int]],
+    day_labels: dict[int, str],
+    output_path: Path,
+    title: str,
+) -> None:
+    plt.rcParams["font.family"] = FONT_STACK
+
+    max_day = max(r[2] for r in rows)
+    n = len(rows)
+    row_h = 1.0
+    fig, ax = plt.subplots(figsize=(8, 1.6 + n * 1.15), dpi=150)
+    fig.patch.set_facecolor(COLOR_BG)
+    ax.set_facecolor(COLOR_BG)
+
+    for i, (label, ex_day, record_day) in enumerate(rows):
+        y = (n - 1 - i) * row_h
+
+        ax.plot([0, max_day], [y, y], color=COLOR_BORDER, linewidth=1.2, zorder=1)
+        ax.text(-0.15, y, label, ha="right", va="center", fontsize=9.5, fontweight="bold", color=COLOR_HEADING)
+
+        # Trade day: neutral reference point, always day 0.
+        ax.scatter([0], [y], s=70, facecolors=COLOR_BG, edgecolors=COLOR_MUTED, linewidths=1.4, zorder=5)
+
+        if ex_day == record_day:
+            ax.scatter(
+                [ex_day], [y], s=170, marker="s", color=COLOR_ACCENT,
+                edgecolors=COLOR_HEADING, linewidths=1.4, zorder=6,
+            )
+            ax.annotate(
+                "Ex-date &\nrecord date", xy=(ex_day, y), xytext=(0, 22), textcoords="offset points",
+                ha="center", va="bottom", fontsize=8, color=COLOR_HEADING, fontweight="bold",
+            )
+        else:
+            ax.scatter([ex_day], [y], s=75, color=COLOR_ACCENT, zorder=6)
+            ax.annotate(
+                "Ex-date", xy=(ex_day, y), xytext=(0, 20), textcoords="offset points",
+                ha="center", va="bottom", fontsize=8, color=COLOR_ACCENT, fontweight="bold",
+            )
+            ax.scatter(
+                [record_day], [y], s=170, marker="s", color=COLOR_ACCENT,
+                edgecolors=COLOR_HEADING, linewidths=1.4, zorder=6,
+            )
+            ax.annotate(
+                "Record date", xy=(record_day, y), xytext=(0, 22), textcoords="offset points",
+                ha="center", va="bottom", fontsize=8, color=COLOR_HEADING, fontweight="bold",
+            )
+
+    ax.set_xlim(-0.35 * max(max_day, 1) - 1.0, max_day + 0.6)
+    ax.set_ylim(-0.75, (n - 1) * row_h + 1.0)
+    ax.set_xticks([])
+    ax.set_yticks([])
+    for spine_name in ("top", "right", "left", "bottom"):
+        ax.spines[spine_name].set_visible(False)
+
+    bottom_row_y = 0
+    if day_labels:
+        for day, label in sorted(day_labels.items()):
+            ax.annotate(
+                label, xy=(day, bottom_row_y), xytext=(0, -20), textcoords="offset points",
+                ha="center", va="top", fontsize=8, color=COLOR_MUTED,
+            )
+
+    # Fixed axes-fraction offset for the key, independent of row count.
+    ax.text(
+        0.0, -0.12,
+        "○ trade day     ● ex-date only     ■ record date (or both, when same day)",
+        transform=ax.transAxes, color=COLOR_MUTED, fontsize=7.5, ha="left", va="top",
+    )
 
     _apply_title(ax, title)
 
@@ -303,7 +510,27 @@ def main() -> int:
     p_flow.add_argument("--right-label", required=True)
     p_flow.add_argument("--top-arrow-label", required=True)
     p_flow.add_argument("--bottom-arrow-label", required=True)
-    p_flow.add_argument("--notional-label", default=None, help="Use \\n for a line break.")
+    p_flow.add_argument("--note-label", default=None, help="Optional dashed note box. Use \\n for a line break.")
+
+    p_compare = subparsers.add_parser("compare", help="Single before/after state change")
+    p_compare.add_argument("--title", required=True)
+    p_compare.add_argument("--output", required=True)
+    p_compare.add_argument("--left-label", required=True, help="Use \\n for a line break.")
+    p_compare.add_argument("--right-label", required=True, help="Use \\n for a line break.")
+    p_compare.add_argument("--arrow-label", required=True, help="Use \\n for a line break.")
+    p_compare.add_argument("--note-label", default=None, help="Optional dashed note box. Use \\n for a line break.")
+
+    p_settlement = subparsers.add_parser("settlement", help="Multi-row market settlement-cycle comparison")
+    p_settlement.add_argument("--title", required=True)
+    p_settlement.add_argument("--output", required=True)
+    p_settlement.add_argument(
+        "--row", action="append", default=[], metavar="LABEL:EX_DAY:RECORD_DAY",
+        help="Repeatable, one per market. Day numbers are business days after the trade day (0).",
+    )
+    p_settlement.add_argument(
+        "--day-label", action="append", default=[], metavar="DAY:LABEL",
+        help="Repeatable. Custom label for a tick on the shared day axis.",
+    )
 
     args = parser.parse_args()
 
@@ -318,13 +545,33 @@ def main() -> int:
                 title=args.title,
                 xlabel=args.xlabel,
             )
-        else:
+        elif args.command == "flow":
             make_flow(
                 left_label=args.left_label,
                 right_label=args.right_label,
                 top_arrow_label=args.top_arrow_label,
                 bottom_arrow_label=args.bottom_arrow_label,
-                notional_label=args.notional_label,
+                note_label=args.note_label,
+                output_path=Path(args.output),
+                title=args.title,
+            )
+        elif args.command == "compare":
+            make_compare(
+                left_label=args.left_label,
+                right_label=args.right_label,
+                arrow_label=args.arrow_label,
+                note_label=args.note_label,
+                output_path=Path(args.output),
+                title=args.title,
+            )
+        else:  # settlement
+            rows = [parse_row(r) for r in args.row]
+            if not rows:
+                raise ChartError("At least one --row is required")
+            day_labels = dict(parse_day_label(d) for d in args.day_label)
+            make_settlement(
+                rows=rows,
+                day_labels=day_labels,
                 output_path=Path(args.output),
                 title=args.title,
             )
