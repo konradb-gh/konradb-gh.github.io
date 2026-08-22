@@ -25,6 +25,12 @@ If Denise holds to maturity, none of this matters — she gets her fixed coupon 
 
 Say a $1,000 bond pays a 4% coupon — $40 a year — issued back when prevailing rates were around 4%. Now rates in the broader market rise to 6%. Brand-new $1,000 bonds pay $60 a year. Nobody's paying full price for an old bond that only pays $40 when a new one pays $60 for the same money — so the old bond's price has to fall, to somewhere around $650–700, before that fixed $40 works out to roughly the same 6% a new buyer could get elsewhere. That real, current return — what you actually earn given the price you paid, not the rate printed on the bond — is its **yield**. Rates falling does the reverse: the old 4% bond suddenly looks generous, so its price gets bid up instead.
 
+Set the price question aside for a second and look at the cash flows on their own — this is the shape every bond has, regardless of what its price does along the way:
+
+![Bond cash flows: $1,000 face value, $40 annual coupon, five-year maturity](/charts/bond-timeline-2026.png)
+
+*Illustrates the $1,000 face value / $40 coupon example above over a five-year term — not a real bond, no external data.*
+
 ## Government bonds vs. corporate bonds
 
 Both work exactly the way described above. What differs is who's borrowing.

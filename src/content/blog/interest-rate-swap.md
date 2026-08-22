@@ -23,6 +23,12 @@ Two terms worth pinning down here, since neither is optional vocabulary once you
 
 A company that borrowed at a floating rate — a corporate loan tied to SOFR, say — but wants to know exactly what it owes every quarter for budgeting purposes can swap into paying fixed, handing the uncertainty to a bank willing to take it on. Banks run a version of this too, though for a different reason than the company above. A bank holding a large book of fixed-rate mortgages isn't funding those loans with fixed-rate money — it's funding them with deposits and short-term borrowing that cost a floating rate. So when rates rise, what the bank pays out on its funding goes up while what it collects on those old fixed-rate mortgages doesn't move at all, squeezing the gap between the two. The fix is the same shape of swap as the company's: the bank pays a fixed rate and receives a floating one, so the floating payments it takes in rise right along with its own rising funding costs and cancel the squeeze out. In the ordinary version of this trade, neither side is speculating. Both are converting a risk they already have into a shape they'd rather hold.
 
+Here's the company's version of that trade laid out as a picture — the notional amount sitting off to the side, doing nothing but setting the math:
+
+![How an interest rate swap moves money: the company and the bank](/charts/interest-rate-swap-diagram-2026.png)
+
+*Illustrates the company's pay-fixed swap described above, using the $300,000 notional from the mortgage analogy — not a real trade, no external data.*
+
 ## Why this matters more right now
 
 I wrote earlier this month about [the Fed holding its policy rate at 3.50%–3.75% under a new, less-forthcoming chair](/blog/fed-september-2026-rate-decision), and separately about [the Treasury scrambling to manage a 30-year yield that had just touched a 19-year high](/blog/treasury-bond-buyback-2026). Both are versions of the same underlying condition: rates that are elevated and genuinely uncertain, not calm and drifting.
