@@ -11,6 +11,7 @@ const blog = defineCollection({
     slug: z.string(),
     category: z.enum(['experiments', 'markets', 'glossary']),
     audioUrl: z.string().optional(),
+    videoUrl: z.string().optional(),
   }),
 });
 

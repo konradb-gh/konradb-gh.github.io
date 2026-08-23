@@ -5,6 +5,7 @@ pubDate: 2026-08-23
 tags: ["bonds", "fixed-income", "treasury", "glossary", "interest-rates"]
 slug: "bond"
 category: "glossary"
+videoUrl: "https://youtu.be/diewERcf67E"
 ---
 
 A bond is a loan you make to a government or a company. In exchange, the borrower promises to pay you back the original amount on a set date, and pay you interest along the way for the use of your money in the meantime.
