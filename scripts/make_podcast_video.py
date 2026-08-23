@@ -105,7 +105,14 @@ def track_text(s: str) -> str:
 def escape_drawtext(s: str) -> str:
     s = s.replace("\\", "\\\\\\\\")
     s = s.replace(":", "\\:")
-    s = s.replace("'", "\\'")
+    # Neither documented escape for a literal ' inside an ffmpeg filtergraph
+    # '...'-wrapped value — backslash-escaping it in place (\'), or closing
+    # and reopening the quote ('\'') — actually works with this ffmpeg
+    # build's drawtext parser; both silently corrupt everything after them
+    # in the graph (verified empirically). Sidestep the delimiter entirely
+    # by swapping in a typographic curly apostrophe, which isn't special to
+    # the filtergraph parser and needs no escaping at all.
+    s = s.replace("'", "’")
     s = s.replace("%", "\\%")
     return s
 
