@@ -33,6 +33,11 @@ corners, thin 1px borders):
               matching cycles visually align and markets with a gap
               between ex-date and record date visibly show it.
 
+  ladder      A live order book, drawn as a price ladder — one
+              horizontal bar per price level, bid levels in one color
+              and ask levels in another, sorted so the best bid and
+              best ask sit closest to the spread gap in the middle.
+
 Examples:
     python make_diagram.py timeline \\
         --title "Bond cash flows: $1,000 face value, $40 annual coupon" \\
@@ -70,6 +75,12 @@ Examples:
         --row "US -- T+1:1:1" \\
         --row "India -- T+1:1:1" \\
         --row "UK / EU -- T+2 (until Oct 2027):1:2"
+
+    python make_diagram.py ladder \\
+        --title "A live order book" \\
+        --output ../public/charts/order-book-ladder-2026.png \\
+        --level "42.30:500:ask" --level "42.15:250:ask" --level "42.05:300:ask" \\
+        --level "41.95:400:bid" --level "41.80:350:bid" --level "41.60:600:bid"
 """
 
 from __future__ import annotations
@@ -94,6 +105,10 @@ COLOR_TEXT = "#1c1b17"
 COLOR_MUTED = "#5c5648"
 COLOR_BORDER = "#ddd6c4"
 COLOR_ACCENT = "#8a5e19"
+# Buy/sell semantics only (e.g. the ladder subcommand's bid/ask bars) —
+# every other subcommand sticks to ACCENT/MUTED for its two-sided contrasts.
+COLOR_POS = "#1f7a45"
+COLOR_NEG = "#b3261e"
 
 FONTS_DIR = Path(__file__).resolve().parent / "fonts"
 for _weight in ("JetBrainsMono-Regular.ttf", "JetBrainsMono-Bold.ttf"):
@@ -486,6 +501,97 @@ def make_settlement(
 
 
 # ---------------------------------------------------------------------------
+# ladder
+# ---------------------------------------------------------------------------
+
+
+def parse_level(spec: str) -> tuple[float, int, str]:
+    parts = spec.split(":", 2)
+    if len(parts) != 3:
+        raise ChartError(f'Bad --level value {spec!r}; expected "PRICE:SIZE:SIDE"')
+    price_str, size_str, side = parts
+    if side not in ("bid", "ask"):
+        raise ChartError(f"Level side must be 'bid' or 'ask', got {side!r}")
+    try:
+        price, size = float(price_str), int(size_str)
+    except ValueError as exc:
+        raise ChartError(f"Bad price/size in --level {spec!r}: {exc}") from exc
+    return price, size, side
+
+
+def make_ladder(
+    levels: list[tuple[float, int, str]],
+    output_path: Path,
+    title: str,
+) -> None:
+    plt.rcParams["font.family"] = FONT_STACK
+
+    # Asks displayed worst-to-best top-to-bottom, bids best-to-worst
+    # top-to-bottom, so the best ask and best bid both land on the rows
+    # immediately next to the spread gap in the middle.
+    asks = sorted((lv for lv in levels if lv[2] == "ask"), key=lambda lv: lv[0])
+    bids = sorted((lv for lv in levels if lv[2] == "bid"), key=lambda lv: -lv[0])
+    if not asks or not bids:
+        raise ChartError("Need at least one 'ask' level and one 'bid' level")
+
+    rows = list(reversed(asks)) + bids
+    n = len(rows)
+    max_size = max(size for _, size, _ in rows)
+
+    fig, ax = plt.subplots(figsize=(8, 1.4 + n * 0.62), dpi=150)
+    fig.patch.set_facecolor(COLOR_BG)
+    ax.set_facecolor(COLOR_BG)
+
+    yticks, ylabels = [], []
+    for i, (price, size, side) in enumerate(rows):
+        y = n - 1 - i
+        color = COLOR_NEG if side == "ask" else COLOR_POS
+        ax.barh(y, size, height=0.58, color=color, zorder=5)
+        ax.text(
+            size + max_size * 0.03, y, f"{size:,} sh",
+            va="center", ha="left", fontsize=8.5, color=COLOR_MUTED,
+        )
+        yticks.append(y)
+        ylabels.append(f"${price:,.2f}")
+
+    ax.set_yticks(yticks)
+    ax.set_yticklabels(ylabels, fontsize=9.5, color=COLOR_HEADING, fontweight="bold")
+    ax.set_xlim(0, max_size * 1.22)
+    ax.set_xlabel("Shares waiting at this price", color=COLOR_MUTED, fontsize=9)
+    ax.tick_params(axis="x", colors=COLOR_MUTED, labelsize=8.5)
+    ax.tick_params(axis="y", length=0)
+    for spine_name in ("top", "right", "left"):
+        ax.spines[spine_name].set_visible(False)
+    ax.spines["bottom"].set_color(COLOR_BORDER)
+
+    best_ask_y = n - len(asks)
+    best_bid_y = best_ask_y - 1
+    mid_y = (best_ask_y + best_bid_y) / 2
+    spread = asks[0][0] - bids[0][0]
+    ax.axhline(mid_y, color=COLOR_BORDER, linewidth=1, linestyle=(0, (4, 3)), zorder=2)
+    ax.text(
+        max_size * 1.22, mid_y, f"Spread: ${spread:,.2f}",
+        va="center", ha="right", fontsize=8.5, color=COLOR_ACCENT, fontweight="bold",
+    )
+
+    ax.text(
+        0.0, -0.16, "■ ask — sellers waiting",
+        transform=ax.transAxes, color=COLOR_NEG, fontsize=7.5, ha="left", va="top", fontweight="bold",
+    )
+    ax.text(
+        0.34, -0.16, "■ bid — buyers waiting",
+        transform=ax.transAxes, color=COLOR_POS, fontsize=7.5, ha="left", va="top", fontweight="bold",
+    )
+
+    _apply_title(ax, title)
+
+    fig.tight_layout()
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(output_path, facecolor=COLOR_BG)
+    plt.close(fig)
+
+
+# ---------------------------------------------------------------------------
 # CLI
 # ---------------------------------------------------------------------------
 
@@ -532,6 +638,14 @@ def main() -> int:
         help="Repeatable. Custom label for a tick on the shared day axis.",
     )
 
+    p_ladder = subparsers.add_parser("ladder", help="Order book price ladder")
+    p_ladder.add_argument("--title", required=True)
+    p_ladder.add_argument("--output", required=True)
+    p_ladder.add_argument(
+        "--level", action="append", default=[], metavar="PRICE:SIZE:SIDE",
+        help="Repeatable. SIDE is 'bid' or 'ask'. Needs at least one of each.",
+    )
+
     args = parser.parse_args()
 
     try:
@@ -564,7 +678,7 @@ def main() -> int:
                 output_path=Path(args.output),
                 title=args.title,
             )
-        else:  # settlement
+        elif args.command == "settlement":
             rows = [parse_row(r) for r in args.row]
             if not rows:
                 raise ChartError("At least one --row is required")
@@ -572,6 +686,15 @@ def main() -> int:
             make_settlement(
                 rows=rows,
                 day_labels=day_labels,
+                output_path=Path(args.output),
+                title=args.title,
+            )
+        else:  # ladder
+            levels = [parse_level(lv) for lv in args.level]
+            if not levels:
+                raise ChartError("At least one --level is required")
+            make_ladder(
+                levels=levels,
                 output_path=Path(args.output),
                 title=args.title,
             )
