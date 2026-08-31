@@ -38,6 +38,10 @@ corners, thin 1px borders):
               and ask levels in another, sorted so the best bid and
               best ask sit closest to the spread gap in the middle.
 
+  scorecard   A two-column comparison table — one row per criterion,
+              a short verdict for each of two things being compared,
+              header row shaded like the site's sidebar-box headers.
+
 Examples:
     python make_diagram.py timeline \\
         --title "Bond cash flows: $1,000 face value, $40 annual coupon" \\
@@ -81,6 +85,13 @@ Examples:
         --output ../public/charts/order-book-ladder-2026.png \\
         --level "42.30:500:ask" --level "42.15:250:ask" --level "42.05:300:ask" \\
         --level "41.95:400:bid" --level "41.80:350:bid" --level "41.60:600:bid"
+
+    python make_diagram.py scorecard \\
+        --title "LSEG Workspace vs. Bloomberg Terminal" \\
+        --output ../public/charts/lseg-vs-bloomberg-2026.png \\
+        --col1-label "LSEG Workspace" --col2-label "Bloomberg Terminal" \\
+        --row "Fixed income depth:Strong:Industry standard" \\
+        --row "Messaging network:Growing:Dominant (IB)"
 """
 
 from __future__ import annotations
@@ -109,6 +120,8 @@ COLOR_ACCENT = "#8a5e19"
 # every other subcommand sticks to ACCENT/MUTED for its two-sided contrasts.
 COLOR_POS = "#1f7a45"
 COLOR_NEG = "#b3261e"
+# Header-row shading for the scorecard subcommand, matching .sidebar-box-header.
+COLOR_BG_RAISED = "#eee9db"
 
 FONTS_DIR = Path(__file__).resolve().parent / "fonts"
 for _weight in ("JetBrainsMono-Regular.ttf", "JetBrainsMono-Bold.ttf"):
@@ -592,6 +605,83 @@ def make_ladder(
 
 
 # ---------------------------------------------------------------------------
+# scorecard
+# ---------------------------------------------------------------------------
+
+
+def parse_scorecard_row(spec: str) -> tuple[str, str, str]:
+    parts = spec.split(":", 2)
+    if len(parts) != 3:
+        raise ChartError(f'Bad --row value {spec!r}; expected "CRITERION:COL1_VALUE:COL2_VALUE"')
+    criterion, val1, val2 = parts
+    return criterion.replace("\\n", "\n"), val1.replace("\\n", "\n"), val2.replace("\\n", "\n")
+
+
+def make_scorecard(
+    rows: list[tuple[str, str, str]],
+    col1_label: str,
+    col2_label: str,
+    output_path: Path,
+    title: str,
+) -> None:
+    plt.rcParams["font.family"] = FONT_STACK
+
+    n = len(rows)
+    label_w, col_w = 3.6, 2.8
+    total_w = label_w + 2 * col_w
+    header_h = 0.9
+    row_h = 0.85
+    total_h = header_h + n * row_h
+
+    fig, ax = plt.subplots(figsize=(9, 1.0 + total_h * 0.72), dpi=150)
+    fig.patch.set_facecolor(COLOR_BG)
+    ax.set_facecolor(COLOR_BG)
+    ax.set_xlim(0, total_w)
+    ax.set_ylim(0, total_h)
+    ax.axis("off")
+
+    col_x = (0.0, label_w, label_w + col_w, total_w)
+
+    def _cell(x0: float, y0: float, w: float, h: float, text: str, *, header: bool, align: str = "center") -> None:
+        ax.add_patch(
+            Rectangle(
+                (x0, y0), w, h,
+                facecolor=COLOR_BG_RAISED if header else COLOR_BG,
+                edgecolor=COLOR_BORDER, linewidth=1, zorder=3,
+            )
+        )
+        if not text:
+            return
+        text_x = x0 + 0.18 if align == "left" else x0 + w / 2
+        ax.text(
+            text_x, y0 + h / 2, text,
+            ha=align, va="center", zorder=4, linespacing=1.4,
+            fontsize=9 if header else 8.5,
+            fontweight="bold" if header else "normal",
+            color=COLOR_HEADING if header else COLOR_TEXT,
+        )
+
+    # Header row sits at the top of the y-range.
+    header_y = total_h - header_h
+    _cell(col_x[0], header_y, label_w, header_h, "", header=True)
+    _cell(col_x[1], header_y, col_w, header_h, col1_label, header=True)
+    _cell(col_x[2], header_y, col_w, header_h, col2_label, header=True)
+
+    for i, (criterion, val1, val2) in enumerate(rows):
+        y = header_y - (i + 1) * row_h
+        _cell(col_x[0], y, label_w, row_h, criterion, header=False, align="left")
+        _cell(col_x[1], y, col_w, row_h, val1, header=False)
+        _cell(col_x[2], y, col_w, row_h, val2, header=False)
+
+    _apply_title(ax, title)
+
+    fig.tight_layout()
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(output_path, facecolor=COLOR_BG)
+    plt.close(fig)
+
+
+# ---------------------------------------------------------------------------
 # CLI
 # ---------------------------------------------------------------------------
 
@@ -646,6 +736,16 @@ def main() -> int:
         help="Repeatable. SIDE is 'bid' or 'ask'. Needs at least one of each.",
     )
 
+    p_scorecard = subparsers.add_parser("scorecard", help="Two-column comparison table")
+    p_scorecard.add_argument("--title", required=True)
+    p_scorecard.add_argument("--output", required=True)
+    p_scorecard.add_argument("--col1-label", required=True)
+    p_scorecard.add_argument("--col2-label", required=True)
+    p_scorecard.add_argument(
+        "--row", action="append", default=[], metavar="CRITERION:COL1_VALUE:COL2_VALUE",
+        help="Repeatable, one per comparison criterion. Use \\n in any field for a line break.",
+    )
+
     args = parser.parse_args()
 
     try:
@@ -689,12 +789,23 @@ def main() -> int:
                 output_path=Path(args.output),
                 title=args.title,
             )
-        else:  # ladder
+        elif args.command == "ladder":
             levels = [parse_level(lv) for lv in args.level]
             if not levels:
                 raise ChartError("At least one --level is required")
             make_ladder(
                 levels=levels,
+                output_path=Path(args.output),
+                title=args.title,
+            )
+        else:  # scorecard
+            rows = [parse_scorecard_row(r) for r in args.row]
+            if not rows:
+                raise ChartError("At least one --row is required")
+            make_scorecard(
+                rows=rows,
+                col1_label=args.col1_label,
+                col2_label=args.col2_label,
                 output_path=Path(args.output),
                 title=args.title,
             )
