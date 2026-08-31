@@ -1,7 +1,7 @@
 ---
 title: "LSEG Workspace vs. Bloomberg Terminal: Where Each One Actually Wins"
 description: "A real comparison of the two major financial data terminals — verified 2026 pricing, Bloomberg's fixed-income and messaging lock-in, and LSEG's corporate-actions and reference-data strengths, partly from firsthand experience inside LSEG's data organization."
-pubDate: 2026-08-31
+pubDate: 2026-08-29
 tags: ["lseg", "bloomberg-terminal", "market-data", "fintech", "markets"]
 slug: "lseg-vs-bloomberg-2026"
 category: "markets"

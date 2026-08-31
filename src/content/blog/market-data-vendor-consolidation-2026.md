@@ -1,7 +1,7 @@
 ---
 title: "Market Data Vendors Are Eating Each Other. Here's Why."
 description: "BlackRock bought Preqin for $3.2 billion to bring private-markets data in-house. MSCI bought three specialist data firms in the last twelve months to stay ahead. Two opposite playbooks, verified figures, and what it means for who controls the best data."
-pubDate: 2026-08-29
+pubDate: 2026-08-31
 tags: ["market-data", "blackrock", "msci", "mergers", "markets"]
 slug: "market-data-vendor-consolidation-2026"
 category: "markets"
