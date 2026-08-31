@@ -9,11 +9,14 @@ Four subcommands, sharing the same visual language (warm paper
 background, amber accent, near-black ink, JetBrains Mono, sharp
 corners, thin 1px borders):
 
-  timeline    A horizontal sequence of dated events — e.g. a bond's
-              cash flows from purchase to maturity. Each event is one
-              of three kinds (outflow / coupon / maturity), styled
-              distinctly so a reader can tell a repeating payment
-              apart from the one-off events at the ends.
+  timeline    A horizontal sequence of dated events. Two families of
+              event kind: outflow / coupon / maturity for cash flows
+              (e.g. a bond's payments to maturity), or vertical /
+              horizontal for acquisitions (e.g. a client absorbing a
+              vendor in-house vs. one vendor consolidating another) —
+              pass --legend with a family-appropriate key when using
+              the acquisition kinds, since the default legend text is
+              cash-flow-specific.
 
   flow        A two-party box-and-arrow diagram — e.g. who pays what
               in an interest rate swap — with an optional dashed
@@ -92,6 +95,15 @@ Examples:
         --col1-label "LSEG Workspace" --col2-label "Bloomberg Terminal" \\
         --row "Fixed income depth:Strong:Industry standard" \\
         --row "Messaging network:Growing:Dominant (IB)"
+
+    python make_diagram.py timeline \\
+        --title "Market data vendor consolidation, 2019-2026" \\
+        --output ../public/charts/vendor-consolidation-2026.png \\
+        --xlabel "" \\
+        --legend "○ client absorbs a vendor in-house     ■ vendor consolidates another vendor" \\
+        --event "0:BlackRock -> eFront\\n$1.3B, 2019:vertical" \\
+        --event "1:LSEG -> Refinitiv\\n$27B, 2021:horizontal" \\
+        --event "2:BlackRock -> Preqin\\n$3.2B announced, 2024:vertical"
 """
 
 from __future__ import annotations
@@ -138,7 +150,7 @@ FONT_STACK = ["JetBrains Mono", "Menlo", "Consolas", "DejaVu Sans Mono", "monosp
 # some labels and not others unless this is off everywhere.
 plt.rcParams["text.parse_math"] = False
 
-EVENT_KINDS = ("outflow", "coupon", "maturity")
+EVENT_KINDS = ("outflow", "coupon", "maturity", "vertical", "horizontal")
 
 
 class ChartError(RuntimeError):
@@ -200,11 +212,14 @@ def make_timeline(
     output_path: Path,
     title: str,
     xlabel: str,
+    legend: str | None = None,
+    width: float = 8.0,
+    hide_xticks: bool = False,
 ) -> None:
     plt.rcParams["font.family"] = FONT_STACK
 
     years = [e[0] for e in events]
-    fig, ax = plt.subplots(figsize=(8, 4.2), dpi=150)
+    fig, ax = plt.subplots(figsize=(width, 4.2), dpi=150)
     fig.patch.set_facecolor(COLOR_BG)
     ax.set_facecolor(COLOR_BG)
 
@@ -228,7 +243,7 @@ def make_timeline(
                 label, xy=(year, baseline_y), xytext=(0, 16), textcoords="offset points",
                 ha="center", va="bottom", fontsize=8.5, color=COLOR_MUTED,
             )
-        else:  # maturity
+        elif kind == "maturity":
             ax.scatter(
                 [year], [baseline_y], s=170, marker="s", color=COLOR_ACCENT,
                 edgecolors=COLOR_HEADING, linewidths=1.4, zorder=6,
@@ -237,13 +252,39 @@ def make_timeline(
                 label, xy=(year, baseline_y), xytext=(0, 26), textcoords="offset points",
                 ha="center", va="bottom", fontsize=9, color=COLOR_HEADING, fontweight="bold",
             )
+        elif kind == "vertical":
+            # A client absorbing a vendor's capabilities in-house.
+            ax.scatter(
+                [year], [baseline_y], s=130, marker="o", facecolors=COLOR_BG, edgecolors=COLOR_ACCENT,
+                linewidths=1.8, zorder=6,
+            )
+            ax.annotate(
+                label, xy=(year, baseline_y), xytext=(0, -30), textcoords="offset points",
+                ha="center", va="top", fontsize=8.5, color=COLOR_HEADING, fontweight="bold",
+            )
+            ax.plot([year, year], [baseline_y, baseline_y - 20 / 72], color=COLOR_BORDER, linewidth=1, zorder=2)
+        else:  # horizontal — a vendor consolidating another vendor into itself
+            ax.scatter(
+                [year], [baseline_y], s=130, marker="s", color=COLOR_MUTED,
+                edgecolors=COLOR_HEADING, linewidths=1.2, zorder=6,
+            )
+            ax.annotate(
+                label, xy=(year, baseline_y), xytext=(0, 26), textcoords="offset points",
+                ha="center", va="bottom", fontsize=8.5, color=COLOR_HEADING, fontweight="bold",
+            )
 
     span = max(years) - min(years) if len(years) > 1 else 1
     ax.set_xlim(min(years) - span * 0.12, max(years) + span * 0.12)
     ax.set_ylim(-1.1, 1.1)
     ax.set_yticks([])
-    ax.set_xticks(years)
-    ax.set_xticklabels([f"{int(y)}" if float(y).is_integer() else f"{y}" for y in years])
+    if hide_xticks:
+        # Event x-positions are just chronological slots, not a real
+        # numeric scale — each event's own label already spells out its
+        # actual date, so a numeric axis underneath would be redundant.
+        ax.set_xticks([])
+    else:
+        ax.set_xticks(years)
+        ax.set_xticklabels([f"{int(y)}" if float(y).is_integer() else f"{y}" for y in years])
     ax.tick_params(colors=COLOR_MUTED, labelsize=9, length=0)
 
     for spine_name in ("top", "right", "left"):
@@ -255,9 +296,9 @@ def make_timeline(
 
     # Legend-as-key, spelled out in plain text rather than a matplotlib
     # legend box, to match the site's spare, label-driven style.
+    default_legend = "○ money paid out     ● coupon received     ■ maturity — principal + final coupon together"
     ax.text(
-        0.0, -0.34,
-        "○ money paid out     ● coupon received     ■ maturity — principal + final coupon together",
+        0.0, -0.34, legend if legend is not None else default_legend,
         transform=ax.transAxes, color=COLOR_MUTED, fontsize=7.5, ha="left", va="top",
     )
 
@@ -696,7 +737,22 @@ def main() -> int:
     p_timeline.add_argument("--xlabel", default="")
     p_timeline.add_argument(
         "--event", action="append", default=[], metavar="YEAR:LABEL:KIND",
-        help="Repeatable. KIND is one of outflow, coupon, maturity. Use \\n in LABEL for a line break.",
+        help=(
+            "Repeatable. KIND is one of outflow, coupon, maturity (cash-flow events) "
+            "or vertical, horizontal (acquisition events). Use \\n in LABEL for a line break."
+        ),
+    )
+    p_timeline.add_argument(
+        "--legend", default=None,
+        help="Override the default cash-flow legend text — required reading if any --event uses vertical/horizontal.",
+    )
+    p_timeline.add_argument(
+        "--width", type=float, default=8.0,
+        help="Figure width in inches (default 8.0). Widen for multi-word labels that would otherwise collide.",
+    )
+    p_timeline.add_argument(
+        "--hide-xticks", action="store_true",
+        help="Hide the numeric x-axis — use when --event years are just chronological slots, not real values.",
     )
 
     p_flow = subparsers.add_parser("flow", help="Two-party box-and-arrow diagram")
@@ -758,6 +814,9 @@ def main() -> int:
                 output_path=Path(args.output),
                 title=args.title,
                 xlabel=args.xlabel,
+                legend=args.legend,
+                width=args.width,
+                hide_xticks=args.hide_xticks,
             )
         elif args.command == "flow":
             make_flow(
